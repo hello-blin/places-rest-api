@@ -37,22 +37,34 @@ const DUMMY_PLACES = [
     creator: "u3",
   },
 ];
-
+//Get request to render as json all places
 router.get("/", (req, res, next) => {
   console.log("Get request to /api/places");
-  res.status(200).json({ messsage: "hi" });
+  res.status(200).json(DUMMY_PLACES);
 });
-//Getting a place that is assigned to a creator 
+//Getting a place that is assigned to a creator
 router.get("/user/:uid", (req, res, next) => {
   const userId = req.params.uid;
 
   const place = DUMMY_PLACES.find((p) => p.creator === userId);
-
-  res.json({ place });
+  if (!place) {
+    const error = new Error(
+      "Could not a find a place given by the specific ID."
+    );
+    error.code = 404;
+    throw error;
+  }
+  res.json(place);
 });
-
+//Getting a place by it's id
 router.get("/:pid", (req, res, next) => {
   const place = DUMMY_PLACES.find((p) => p.id === req.params.pid);
+  if (!place) {
+    const error = new Error(
+      "Could not a find a place given by the specific ID."
+    );
+    error.code = 404;
+  }
   res.status(200).json({ place });
   console.log("Get request to /api/places/pid");
 });
