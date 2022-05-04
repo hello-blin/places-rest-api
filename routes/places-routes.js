@@ -1,6 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 const router = express.Router();
+const HttpError = require("../models/http-error");
 
 const DUMMY_PLACES = [
   {
@@ -48,11 +49,7 @@ router.get("/user/:uid", (req, res, next) => {
 
   const place = DUMMY_PLACES.find((p) => p.creator === userId);
   if (!place) {
-    const error = new Error(
-      "Could not a find a place id for the user id you wrote."
-    );
-    error.code = 404;
-    return next(error);
+    return next(new HttpError("Couldnt find a place by the provided user ID."));
   }
   res.json(place);
 });
@@ -60,10 +57,7 @@ router.get("/user/:uid", (req, res, next) => {
 router.get("/:pid", (req, res, next) => {
   const place = DUMMY_PLACES.find((p) => p.id === req.params.pid);
   if (!place) {
-    const error = new Error(
-      "Could not a find a place given by the specific ID."
-    );
-    error.code = 404;
+    throw new HttpError("Couldnt find a place by the provided ID.");
   }
   res.status(200).json({ place });
   console.log("Get request to /api/places/pid");
