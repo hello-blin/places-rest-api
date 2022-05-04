@@ -52,7 +52,7 @@ router.get("/user/:uid", (req, res, next) => {
       "Could not a find a place given by the specific ID."
     );
     error.code = 404;
-    throw error;
+    return next(error);
   }
   res.json(place);
 });
