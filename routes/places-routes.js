@@ -3,6 +3,12 @@ const colors = require("colors");
 const router = express.Router();
 const HttpError = require("../models/http-error");
 
+//import Controllers
+const {
+  getPlaceById,
+  getPlaceByUserId,
+} = require("../controllers/places-controller");
+
 const DUMMY_PLACES = [
   {
     id: "p1",
@@ -44,23 +50,8 @@ router.get("/", (req, res, next) => {
   res.status(200).json(DUMMY_PLACES);
 });
 //Getting a place that is assigned to a creator
-router.get("/user/:uid", (req, res, next) => {
-  const userId = req.params.uid;
-
-  const place = DUMMY_PLACES.find((p) => p.creator === userId);
-  if (!place) {
-    return next(new HttpError("Couldnt find a place by the provided user ID."));
-  }
-  res.json(place);
-});
+router.get("/user/:uid", getPlaceByUserId);
 //Getting a place by it's id
-router.get("/:pid", (req, res, next) => {
-  const place = DUMMY_PLACES.find((p) => p.id === req.params.pid);
-  if (!place) {
-    throw new HttpError("Couldnt find a place by the provided ID.");
-  }
-  res.status(200).json({ place });
-  console.log("Get request to /api/places/pid");
-});
+router.get("/:pid", getPlaceById);
 
 module.exports = router;
