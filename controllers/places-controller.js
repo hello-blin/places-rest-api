@@ -1,6 +1,9 @@
+const req = require("express/lib/request");
+
+const num = 1;
 const DUMMY_PLACES = [
   {
-    id: "p1",
+    id: `p${num}`,
     name: "Prishtina",
     description: "The capital city of Kosovo, largest city in Kosovo.",
     location: {
@@ -11,7 +14,7 @@ const DUMMY_PLACES = [
     creator: "u1",
   },
   {
-    id: "p2",
+    id: `p${num + 1}`,
     name: "Gjakova",
     description: "The oldest city and with a really rich culture on itself.",
     location: {
@@ -22,7 +25,7 @@ const DUMMY_PLACES = [
     creator: "u2",
   },
   {
-    id: "p3",
+    id: `p${num + 2}`,
     name: "Drenas",
     description: "A city placed in Drenica's region.",
     location: {
@@ -33,6 +36,11 @@ const DUMMY_PLACES = [
     creator: "u3",
   },
 ];
+
+const getAll = (req, res, next) => {
+  res.status(200).json({ DUMMY_PLACES: DUMMY_PLACES });
+  console.log("Get request to /api/places/");
+};
 
 const getPlaceById = (req, res, next) => {
   const place = DUMMY_PLACES.find((p) => p.id === req.params.pid);
@@ -54,17 +62,17 @@ const getPlaceByUserId = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
-  const place = {
-    id: `p`,
-    name: "Prishtina",
-    description: "The capital city of Kosovo, largest city in Kosovo.",
-    location: {
-      lat: 42.66066397045114,
-      lang: 21.175643842862385,
-    },
-    address: "Rruga Robert Doll, NR.158, 10000",
-    creator: "u1",
+  const { name, description, coordinates, address, creator } = req.body;
+
+  const newPlace = {
+    name,
+    description,
+    location: coordinates,
+    address,
+    creator,
   };
+  DUMMY_PLACES.push(newPlace);
+  res.status(200).json({ newPlace });
 };
 
-module.exports = { getPlaceById, getPlaceByUserId };
+module.exports = { getPlaceById, getPlaceByUserId, createPlace, getAll };

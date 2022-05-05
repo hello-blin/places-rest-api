@@ -8,6 +8,8 @@ const usersRouter = require("./routes/users-routes");
 
 app.use(express.json());
 
+app.use(bodyparser.json());
+
 //Routing
 app.use("/api/places", placesRouter);
 app.use("/api/users", usersRouter);
@@ -21,8 +23,7 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred" });
 });
 
-
-//Initializing port to launch 
+//Initializing port to launch
 app.listen(3000, () => {
   console.log(`Connected to port 3000`.bgMagenta);
 });

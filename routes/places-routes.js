@@ -7,16 +7,17 @@ const HttpError = require("../models/http-error");
 const {
   getPlaceById, // Seperate function to find a place by ID
   getPlaceByUserId, // Seperate function to find a place by users ID
+  createPlace, //Seperate function to create a Place,
+  getAll, //Seperate funciton to get all Places
 } = require("../controllers/places-controller");
 
-//Get request to render as json all places
-router.get("/", (req, res, next) => {
-  console.log("Get request to /api/places");
-  res.status(200).json(DUMMY_PLACES);
-});
 //Getting a place that is assigned to a creator
 router.get("/user/:uid", getPlaceByUserId);
 //Getting a place by it's id
 router.get("/:pid", getPlaceById);
+//Getting all places
+router.get("/", getAll);
+
+router.post("/", createPlace);
 
 module.exports = router;
