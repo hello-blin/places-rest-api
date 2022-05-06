@@ -1,4 +1,4 @@
-const req = require("express/lib/request");
+const uuid = require("uuid").v4;
 
 const num = 1;
 const DUMMY_PLACES = [
@@ -65,6 +65,7 @@ const createPlace = (req, res, next) => {
   const { name, description, coordinates, address, creator } = req.body;
 
   const newPlace = {
+    id: uuid(),
     name,
     description,
     location: coordinates,
