@@ -76,4 +76,25 @@ const createPlace = (req, res, next) => {
   res.status(200).json({ newPlace });
 };
 
-module.exports = { getPlaceById, getPlaceByUserId, createPlace, getAll };
+const updatePlace = (req, res, next) => {
+  const { name, description } = req.body;
+  const placeId = req.params.pid;
+
+  const updatedPlace = DUMMY_PLACES.find((p) => p.id === placeId) ;
+
+  updatedPlace.name = name;
+  updatedPlace.description = description;
+
+  res.status(200).json({ place: updatedPlace });
+};
+
+
+
+module.exports = {
+  getPlaceById,
+  getPlaceByUserId,
+  createPlace,
+  getAll,
+  updatePlace,
+  // deleteplace,
+};

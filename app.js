@@ -6,6 +6,9 @@ const app = express();
 const placesRouter = require("./routes/places-routes");
 const usersRouter = require("./routes/users-routes");
 
+//ErrorHandler import
+const HttpError = require("./models/http-error");
+
 app.use(express.json());
 
 app.use(bodyparser.json());
@@ -21,6 +24,11 @@ app.use((error, req, res, next) => {
   }
   res.status(error.code || 500);
   res.json({ message: error.message || "An unknown error occurred" });
+});
+
+app.use((req, res, next) => {
+  const error = new HttpError("Couldnt find this route", 404);
+  throw error;
 });
 
 //Initializing port to launch
